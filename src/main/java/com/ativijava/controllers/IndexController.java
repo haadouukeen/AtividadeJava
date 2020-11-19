@@ -5,6 +5,7 @@
  */
 package com.ativijava.controllers;
 
+import java.util.Random;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,14 +41,66 @@ public class IndexController {
         return mv;
     }
     
-    @RequestMapping("/endpoint2")
-    public String endpoint2(){
-        return "endpoint2";
+    @RequestMapping(value="/endpoint2",method=RequestMethod.GET)
+    public ModelAndView endpoint2(){
+        ModelAndView mv = new ModelAndView("endpoint2");
+        Fatorial f = new Fatorial();
+        f.setFatorial("");
+        mv.addObject("resultado", f);
+        
+        return mv;
     }
     
-    @RequestMapping("/endpoint3")
-    public String endpoint3(){
-        return "endpoint3";
+    @RequestMapping(value="/endpoint2",method=RequestMethod.POST)
+    public ModelAndView endpoint2Post(Fatorial fato){
+        ModelAndView mv = new ModelAndView("endpoint2");
+        double resultado = 1;
+        
+        for(int i = fato.getVal();i > 0;i--){
+            resultado = resultado * i;
+        }
+        
+        fato.setFatorial(String.valueOf(resultado));
+        mv.addObject("resultado", fato);
+        
+        return mv;
+    }
+    
+    @RequestMapping(value="/endpoint3",method=RequestMethod.GET)
+    public ModelAndView endpoint3(){
+        ModelAndView mv = new ModelAndView("endpoint3");
+        Vals v  = new Vals();
+        v.setSoma("");
+        mv.addObject("resultado", v);
+        
+        return mv;
+    }
+    
+    @RequestMapping(value="/endpoint3",method=RequestMethod.POST)
+    public ModelAndView endpoint3Post(Vals vals){
+        ModelAndView mv = new ModelAndView("endpoint3");
+        Random rn = new Random();
+        
+        int m[][] = new int[vals.getVal1()][vals.getVal2()];
+        
+        for(int i1=0;i1<vals.getVal1();i1++){
+            for(int i2=0;i2<vals.getVal2();i2++){
+                m[i1][i2] = rn.nextInt();
+            }
+        }
+        
+        int resultado = 0;
+        
+        for(int i1=0;i1<vals.getVal1();i1++){
+            for(int i2=0;i2<vals.getVal2();i2++){
+                resultado = resultado + m[i1][i2];
+            }
+        }
+        
+        vals.setSoma(String.valueOf(resultado));
+        mv.addObject("resultado", vals);
+        
+        return mv;
     }
 }
 
@@ -78,6 +131,27 @@ class Vals{
 
     public void setSoma(String soma) {
         this.soma = soma;
+    }
+}
+
+class Fatorial{
+    private int val;
+    private String fatorial;
+
+    public int getVal() {
+        return val;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
+    }
+
+    public String getFatorial() {
+        return fatorial;
+    }
+
+    public void setFatorial(String fatorial) {
+        this.fatorial = fatorial;
     }
     
     
