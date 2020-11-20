@@ -52,26 +52,31 @@ and open the template in the editor.
                     
                     <div class="card m-3">
                         <div class="card-body">
-                            <h5 class="card-title">Digite dois valores para soma:</h5>
+                            <th:block th:include="msg"></th:block>
+                            <h5 class="card-title">Lista dos veículos:</h5>
                             <div class="card-body">
                                 <form method="post">
-                                    <div class="row" th:each="resultado: ${resultado}">
-                                        <div class="col-lg-4 col-12 mb-3">
-                                            <input type="number" name="val1" required class="form-control" placeholder="Valor 1" />
-                                        </div>
-                                        <div class="col-lg-4 col-12 mb-3">
-                                            <input type="number" name="val2" required class="form-control" placeholder="Valor 2" />
-                                        </div>
-                                        <div class="col-lg-4 col-12 mb-3">
-                                            <input type="number" class="form-control" placeholder="Resultado" disabled="true"
-                                                   th:value="${resultado.soma}" name="soma"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-12">
-                                            <button type="submit" class="btn btn-success btn-block">Somar</button>
-                                        </div>
-                                    </div>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr class="thead-dark">
+                                                <th>Nome</th>
+                                                <th>Placa</th>
+                                                <th>Tipo</th>
+                                                <th>Retirar Vaga</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <div th:each="veiculo: ${veiculos}">
+                                                <tr>
+                                                    <td><span th:text="${veiculo.nome}"></span></td>
+                                                    <td><span th:text="${veiculo.placa}"></span></td>
+                                                    <td><span th:text="${veiculo.tipo}"></span></td>
+                                                    <td><span><a th:href="@{'/endpoint4_3/'+${veiculo.id}+'/'+${veiculo.tipo}}"><i class="material-icons">delete</i></a></span></td>
+                                                </tr>
+                                            </div>
+                                            
+                                        </tbody>
+                                    </table>
                                 </form>
                             </div>
                         </div>

@@ -13,5 +13,5 @@ import org.springframework.data.repository.CrudRepository;
  * @author Igor
  */
 public interface EstacionamentoRepository extends CrudRepository<Estacionamento,Long>{
-    Estacionamento findById(long id);
+    //Estacionamento findById(long id);
 }

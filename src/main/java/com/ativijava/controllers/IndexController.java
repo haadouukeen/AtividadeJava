@@ -11,10 +11,12 @@ import com.ativijava.models.Moto;
 import com.ativijava.repository.CarroRepository;
 import com.ativijava.repository.EstacionamentoRepository;
 import com.ativijava.repository.MotoRepository;
+import java.util.ArrayList;
 import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -170,7 +172,7 @@ public class IndexController {
     public ModelAndView endpoint4_2(){
         ModelAndView mv = new ModelAndView("endpoint4_2");
         
-        Estacionamento e = er.findById(1);
+        Estacionamento e = er.findById(Long.valueOf(1)).get();
         
         mv.addObject("livres", e.getLivres());
         mv.addObject("ocupadas", e.getOcupados());
@@ -181,15 +183,60 @@ public class IndexController {
     @RequestMapping(value="/endpoint4_3",method=RequestMethod.GET)
     public ModelAndView endpoint4_3(){
         ModelAndView mv = new ModelAndView("endpoint4_3");
+        ArrayList<Item> lista = new ArrayList();
+        
+        Iterable<Carro> carros = cr.findAll();
+        Iterable<Moto> motos = mr.findAll();
+        
+        for(Carro car:carros){
+            Item i = new Item();
+            i.setId(car.getId());
+            i.setNome(car.getNome());
+            i.setPlaca(car.getPlaca());
+            i.setTipo("Carro");
+            
+            lista.add(i);
+        }
+        
+        for(Moto car:motos){
+            Item i = new Item();
+            i.setId(car.getId());
+            i.setNome(car.getNome());
+            i.setPlaca(car.getPlaca());
+            i.setTipo("Moto");
+            
+            lista.add(i);
+        }
+        
+        mv.addObject("veiculos", lista);
         
         return mv;
     }
     
-    @RequestMapping(value="/endpoint4_3",method=RequestMethod.POST)
-    public ModelAndView endpoint4_3Post(Vals vals){
-        ModelAndView mv = new ModelAndView("endpoint4_3");
-      
-        return mv;
+    @RequestMapping(value="/endpoint4_3/{id}/{tipo}",method=RequestMethod.GET)
+    public String endpoint4_3Get(@PathVariable("id") long id,@PathVariable("tipo") String tipo,
+            RedirectAttributes attributes){
+        Estacionamento e = er.findById(Long.valueOf(1)).get();
+        int tamanho = 0;
+        
+        if(tipo.equals("Carro")){
+            Carro c = cr.findById(id).get();
+            cr.delete(c);
+            
+            tamanho = 4;
+        }else{
+            Moto c = mr.findById(id).get();
+            mr.delete(c);
+            
+            tamanho = 2;
+        }
+        
+        e.setLivres(e.getLivres()+tamanho);
+        e.setOcupados(e.getOcupados()-tamanho);
+        er.save(e);
+        
+        attributes.addFlashAttribute("mensagem", "Removido com sucesso.");
+        return "redirect:/endpoint4_3";
     }
 }
 
@@ -241,6 +288,45 @@ class Fatorial{
 
     public void setFatorial(String fatorial) {
         this.fatorial = fatorial;
+    }
+}
+
+class Item{
+    private long id;
+    private String nome;
+    private String placa;
+    private String tipo;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     
