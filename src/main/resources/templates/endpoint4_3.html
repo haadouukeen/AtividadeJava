@@ -30,20 +30,20 @@ and open the template in the editor.
                                 <li class="nav-item">
                                   <a class="nav-link" href="/endpoint1">Endpoint 1</a>
                                 </li>
-                                <li class="nav-item active">
+                                <li class="nav-item">
                                   <a class="nav-link" href="/endpoint2">Endpoint 2</a>
                                 </li>
                                 <li class="nav-item">
                                   <a class="nav-link" href="/endpoint3">Endpoint 3</a>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="nav-link dropdown-toggle active" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       Endpoint 4
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                       <a class="dropdown-item" href="/endpoint4_1">4.1</a>
                                       <a class="dropdown-item" href="/endpoint4_2">4.2</a>
-                                      <a class="dropdown-item" href="/endpoint4_3">4.3</a>
+                                      <a class="dropdown-item active" href="/endpoint4_3">4.3</a>
                                     </div>
                                 </li>
                             </ul>
@@ -52,21 +52,24 @@ and open the template in the editor.
                     
                     <div class="card m-3">
                         <div class="card-body">
-                            <h5 class="card-title">Digite um valor para retornar o fatorial dele:</h5>
+                            <h5 class="card-title">Digite dois valores para soma:</h5>
                             <div class="card-body">
                                 <form method="post">
                                     <div class="row" th:each="resultado: ${resultado}">
                                         <div class="col-lg-4 col-12 mb-3">
-                                            <input type="number" name="val" required class="form-control" placeholder="Valor" />
+                                            <input type="number" name="val1" required class="form-control" placeholder="Valor 1" />
                                         </div>
                                         <div class="col-lg-4 col-12 mb-3">
-                                            <input type="number" class="form-control" placeholder="Fatorial" disabled="true"
-                                                   th:value="${resultado.fatorial}" name="fatorial"/>
+                                            <input type="number" name="val2" required class="form-control" placeholder="Valor 2" />
+                                        </div>
+                                        <div class="col-lg-4 col-12 mb-3">
+                                            <input type="number" class="form-control" placeholder="Resultado" disabled="true"
+                                                   th:value="${resultado.soma}" name="soma"/>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4 col-12">
-                                            <button type="submit" class="btn btn-success btn-block">Fatorial</button>
+                                            <button type="submit" class="btn btn-success btn-block">Somar</button>
                                         </div>
                                     </div>
                                 </form>
