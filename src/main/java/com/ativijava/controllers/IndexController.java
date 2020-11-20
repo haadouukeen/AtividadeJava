@@ -170,13 +170,11 @@ public class IndexController {
     public ModelAndView endpoint4_2(){
         ModelAndView mv = new ModelAndView("endpoint4_2");
         
-        return mv;
-    }
-    
-    @RequestMapping(value="/endpoint4_2",method=RequestMethod.POST)
-    public ModelAndView endpoint4_2Post(Vals vals){
-        ModelAndView mv = new ModelAndView("endpoint4_2");
-      
+        Estacionamento e = er.findById(1);
+        
+        mv.addObject("livres", e.getLivres());
+        mv.addObject("ocupadas", e.getOcupados());
+        
         return mv;
     }
     
